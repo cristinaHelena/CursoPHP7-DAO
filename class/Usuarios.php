@@ -1,51 +1,70 @@
 <?php
+class Usuarios extends PDO {
 
-class Sql extends PDO {
+    private $idusuario;
+    private $deslogin;
+    private $dessenha;
+    private $dtcadastro;
 
-    private $conn;
+    public function getUsuario(){
+        return $this->idusuario;
+    }
 
-    
+    public function setUsuario($value){
+        $this->idusuario = $value;
+    }
 
-    public function __construct(){
-
-    	$this->conn = new PDO("mysql:host=localhost;dbname=dbphp7","root","");
-
+    public function getDeslogin(){
+        return $this->deslogin;
     } 
 
-    private function setParams($statment,$parameters = array()){
-
-    	foreach ($parameters as $key => $value) {
+    public function setDeslogin($value){
+        $this->deslogin = $value;
+    }
     		
-           $this->setParam($key,$value);
+    public function getDessenha(){
+        return $this->dessenha;
+    }
 
+    public function setDessenha($value){
+        $this->dessenha = $value;
     	}
+
+    public function getDtCadastro(){
+        return $this->dtcadastro;
     }
 
-
-    private function setParam($statment, $key, $value){
-    	$statment->bindParam($key,$value);
-
+    public function setDtCadastro($value){
+        $this->dtcadastro = $value;
     }
 
+    public function loadById($id){
 
-    public function query($rawQuery,$params = array()){
+         $sql = new Sql();
  
-    	$stmt = $this->conn->prepare($rawQuery);
+         $results = $sql->select("SELECT * FROM tb_usuarios WHERE idusuario = :ID", array(
+             ":ID" => $id
+         ));
 
-    	$this->setParams($stmt, $params);
+         if (count($results) > 0){
 
-    	$stmt->execute();
+            $row = $results[0];
 
-    	return $stmt;
+            $this-> setIdusuario($row['idusuario']);
+            $this-> setDeslogin($row['deslogin']);
+            $this-> setDessenha($row['dessenha']);
+            $this-> setDtCadastro(new Datetime($row['dtcadastro']));       
+         }                                
     }
 
+    public function __toString(){
 
-    public function select($rawQuery, $params =array()):array{
-
-    	$stmt = $this->query($rawQuery,$params);
-
-    	return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        return json_encode(array(
+            "idusuario"=>$this->getIdusuario(),
+            "deslogin"=>$this->getDeslogin(),
+            "desenha"=>$this->getDessenha(),
+            "dtcadastro"=>$this->getDtCadastro()->format("d/m/Y H:i:s")
+        ))
     }
 
 }
