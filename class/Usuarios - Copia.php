@@ -52,62 +52,24 @@ class Usuario {
 
             $row = $results[0];
 
-            $this-> setUsuario($row['idusuario']);
+            $this-> setIdusuario($row['idusuario']);
             $this-> setDeslogin($row['deslogin']);
             $this-> setDessenha($row['dessenha']);
             $this-> setDtCadastro(new Datetime($row['dtcadastro']));       
          }                                
     }
 
-    public static function getList(){
-       
-        $sql = new Sql();
-
-        return $sql->select("SELECT * FROM tb_usuarios ORDER BY deslogin;");
-
-    }
-
-
-    public static function search($login){
-       
-        $sql = new Sql();
-
-        return $sql->select("SELECT * FROM tb_usuarios where deslogin like :SEARCH ORDER BY deslogin;",array(':SEARCH'=>"%".$login."%"));
-
-    }
-
-    public function login($Login, $password){
-
-        $sql = new Sql();
- 
-        $results = $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :LOGIN AND dessenha = :PASSWORD", array(
-            ":LOGIN" => $Login,
-            ":PASSWORD" => $password
-        ));
-
-        if (count($results) > 0){
-
-           $row = $results[0];
-
-           $this-> setUsuario($row['idusuario']);
-           $this-> setDeslogin($row['deslogin']);
-           $this-> setDessenha($row['dessenha']);
-           $this-> setDtCadastro(new Datetime($row['dtcadastro']));       
-        } else {
-
-            throw new Exception("Login e/ou senha inválidos.");
-        }                                
-
-    }
     public function __toString(){
 
         return json_encode(array(
-            "idusuario"=>$this->getUsuario(),
+            "idusuario"=>$this->getIdusuario(),
             "deslogin"=>$this->getDeslogin(),
             "desenha"=>$this->getDessenha(),
             "dtcadastro"=>$this->getDtCadastro()->format("d/m/Y H:i:s")
         ));
     }
+
+   
 
 }
 
