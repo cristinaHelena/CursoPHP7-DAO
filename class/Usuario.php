@@ -1,5 +1,5 @@
 <?php
-class Usuarios extends PDO {
+class Usuario {
 
     private $idusuario;
     private $deslogin;
@@ -52,7 +52,7 @@ class Usuarios extends PDO {
 
             $row = $results[0];
 
-            $this-> setIdusuario($row['idusuario']);
+            $this-> setUsuario($row['idusuario']);
             $this-> setDeslogin($row['deslogin']);
             $this-> setDessenha($row['dessenha']);
             $this-> setDtCadastro(new Datetime($row['dtcadastro']));       
@@ -62,11 +62,11 @@ class Usuarios extends PDO {
     public function __toString(){
 
         return json_encode(array(
-            "idusuario"=>$this->getIdusuario(),
+            "idusuario"=>$this->getUsuario(),
             "deslogin"=>$this->getDeslogin(),
             "desenha"=>$this->getDessenha(),
             "dtcadastro"=>$this->getDtCadastro()->format("d/m/Y H:i:s")
-        ))
+        ));
     }
 
 }
