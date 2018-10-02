@@ -6,6 +6,8 @@ class Usuarios extends PDO {
     private $dessenha;
     private $dtcadastro;
 
+//xxxxxxxxxxxxxxxxxxxxxxx
+
     public function getUsuario(){
         return $this->idusuario;
     }
